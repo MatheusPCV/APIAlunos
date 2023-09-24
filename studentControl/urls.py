@@ -16,5 +16,5 @@ urlpatterns = [
     path('discipline/<int:pk>/', DisciplineDetailView.as_view()),
     path('task/', TaskView.as_view()),
     path('task/<int:pk>/', TaskDetailView.as_view()),
-    path('student/<int:student_id>/tasks/', StudentTasksView.as_view())
+    path('student/<int:pk>/tasks/', StudentTasksView.as_view())
 ]
