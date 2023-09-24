@@ -13,13 +13,18 @@ from studentControl.serializers import StudentSerializer
 from studentControl.serializers import TaskSerializer
 
 
+
 # STUDENT VIEWS
 class StudentView(APIView):
 
     # List of Students
     def get(self, request):
-        students = Student.objects.all()
-        serializer = StudentSerializer(students, many=True)
+        try:
+            students = Student.objects.all()
+            serializer = StudentSerializer(students, many=True)
+
+        except:
+            return Response(serializer.error, status=status.HTTP_400_BAD_REQUEST)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
     
@@ -32,20 +37,27 @@ class StudentView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         
         return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
-        
 class StudentDetailView(APIView):
 
     # Student details
     def get(self, request, pk):
-        student = Student.objects.get(pk=pk)
-        serializer = StudentSerializer(student)
+        try:
+            student = Student.objects.get(pk=pk)
+            serializer = StudentSerializer(student)
+
+        except:
+            return Response(serializer.error, status=status.HTTP_400_BAD_REQUEST)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
     
     # Modifying a Student
     def put(self, request, pk):
-        student = Student.objects.get(pk=pk)
-        serializer = StudentSerializer(student,data=request.data)
+        try:
+            student = Student.objects.get(pk=pk)
+            serializer = StudentSerializer(student,data=request.data)
+
+        except:
+            return Response(serializer.error, status=status.HTTP_400_BAD_REQUEST)
         
         if(serializer.is_valid()):
             serializer.save()
@@ -56,11 +68,14 @@ class StudentDetailView(APIView):
     
     # Deleting a Student
     def delete(self, request, pk):
-        student = Student.objects.get(pk=pk)
-        student.delete()
+        try:
+            student = Student.objects.get(pk=pk)
+            student.delete()
 
+        except:
+            return Response(status[status.HTTP_400_BAD_REQUEST])
+        
         return Response(status=status.HTTP_204_NO_CONTENT)
-
 
 
 
@@ -71,9 +86,13 @@ class DisciplineView(APIView):
 
     # List of Disciplines
     def get(self, request):
-        disciplines = Discipline.objects.all()
-        serializer = DisciplineSerializer(disciplines, many=True)
+        try:
+            disciplines = Discipline.objects.all()
+            serializer = DisciplineSerializer(disciplines, many=True)
 
+        except:
+            return Response(serializer.error, status=status.HTTP_400_BAD_REQUEST)
+        
         return Response(serializer.data, status=status.HTTP_200_OK)
     
     # Creating Discipline
@@ -86,21 +105,27 @@ class DisciplineView(APIView):
         
         return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
 
-
-
 class DisciplineDetailView(APIView):
 
     # Discipline details
     def get(self, request, pk):
-        discipline = Discipline.objects.get(pk=pk)
-        serializer = DisciplineSerializer(discipline)
-
+        try:
+            discipline = Discipline.objects.get(pk=pk)
+            serializer = DisciplineSerializer(discipline)
+        
+        except:
+            return Response(serializer.error, status=status.HTTP_400_BAD_REQUEST)
+        
         return Response(serializer.data, status=status.HTTP_200_OK)
     
     # Modifying a Discipline
     def put(self, request, pk):
-        discipline = Discipline.objects.get(pk=pk)
-        serializer = DisciplineSerializer(discipline,data=request.data)
+        try:
+            discipline = Discipline.objects.get(pk=pk)
+            serializer = DisciplineSerializer(discipline,data=request.data)
+        
+        except:
+            return Response(serializer.error, status=status.HTTP_400_BAD_REQUEST)    
         
         if(serializer.is_valid()):
             serializer.save()
@@ -111,12 +136,14 @@ class DisciplineDetailView(APIView):
     
     # Deleting a Discipline
     def delete(self, request, pk):
-        discipline = Discipline.objects.get(pk=pk)
-        discipline.delete()
-
+        try:
+            discipline = Discipline.objects.get(pk=pk)
+            discipline.delete()
+        
+        except:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        
         return Response(status=status.HTTP_204_NO_CONTENT)
-
-
 
 
 
@@ -125,12 +152,18 @@ class DisciplineDetailView(APIView):
 # TASK VIEWS
 class TaskView(APIView):
 
+    # List Tasks
     def get(self, request):
-        task = Task.objects.all()
-        serializer = TaskSerializer(task, many=True)
-
+        try:
+            task = Task.objects.all()
+            serializer = TaskSerializer(task, many=True)
+        
+        except:
+            return Response(serializer.error, status=status.HTTP_400_BAD_REQUEST)
+        
         return Response(serializer.data, status=status.HTTP_200_OK)
     
+    # Add Task
     def post(self, request):
         serializer = TaskSerializer(data=request.data)
         if (serializer.is_valid()):
@@ -140,19 +173,27 @@ class TaskView(APIView):
         
         return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
 
-
-
 class TaskDetailView(APIView):
 
+    # Task details
     def get(self, request, pk):
-        task = Task.objects.get(pk=pk)
-        serializer = TaskSerializer(task)
+        try:
+            task = Task.objects.get(pk=pk)
+            serializer = TaskSerializer(task)
 
+        except:
+            return Response(serializer.error, status=status.HTTP_400_BAD_REQUEST)
+        
         return Response(serializer.data, status=status.HTTP_200_OK)
     
+    # Modifying Task
     def put(self, request, pk):
-        task = Task.objects.get(pk=pk)
-        serializer = TaskSerializer(task,data=request.data)
+        try:
+            task = Task.objects.get(pk=pk)
+            serializer = TaskSerializer(task,data=request.data)
+        
+        except:
+            return Response(serializer.error, status=status.HTTP_400_BAD_REQUEST)
         
         if(serializer.is_valid()):
             serializer.save()
@@ -161,16 +202,26 @@ class TaskDetailView(APIView):
         
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
+    # Deleting Task
     def delete(self, request, pk):
-        task = Task.objects.get(pk=pk)
-        task.delete()
+        try:
+            task = Task.objects.get(pk=pk)
+            task.delete()
 
+        except:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        
         return Response(status=status.HTTP_204_NO_CONTENT)
     
+
+
+
+
+# STUDENTTASK VIEW
 class StudentTasksView(APIView):
-    def get(self, request, student_id):
+    def get(self, request, pk):
         try:
-            student = Student.objects.get(pk=student_id)
+            student = Student.objects.get(pk=pk)
             tasks = Task.objects.filter(student=student)
             
             student_serializer = StudentSerializer(student)
